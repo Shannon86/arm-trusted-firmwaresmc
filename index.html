@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Arm-trusted-firmwaresmc : ARM Trusted Firmware">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Arm-trusted-firmwaresmc</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Shannon86/arm-trusted-firmwaresmc">View on GitHub</a>
+
+          <h1 id="project_title">Arm-trusted-firmwaresmc</h1>
+          <h2 id="project_tagline">ARM Trusted Firmware</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Shannon86/arm-trusted-firmwaresmc/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Shannon86/arm-trusted-firmwaresmc/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="arm-trusted-firmware---version-11" class="anchor" href="#arm-trusted-firmware---version-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>ARM Trusted Firmware - version 1.1</h1>
+
+<p>ARM Trusted Firmware provides a reference implementation of secure world
+software for <a href="http://www.arm.com/products/processors/armv8-architecture.php" title="ARMv8-A Architecture">ARMv8-A</a>, including Exception Level 3 (EL3) software. This release
+provides complete support for version 0.2 of the <a href="http://infocenter.arm.com/help/topic/com.arm.doc.den0022c/DEN0022C_Power_State_Coordination_Interface.pdf" title="Power State Coordination Interface PDD (ARM DEN 0022C)">PSCI</a> specification, initial
+support for the new version 1.0 of that specification, and prototype support for
+the Trusted Board Boot Requirements specification.</p>
+
+<p>The intent is to provide a reference implementation of various ARM interface
+standards, such as the Power State Coordination Interface (<a href="http://infocenter.arm.com/help/topic/com.arm.doc.den0022c/DEN0022C_Power_State_Coordination_Interface.pdf" title="Power State Coordination Interface PDD (ARM DEN 0022C)">PSCI</a>), Trusted
+Board Boot Requirements (TBBR) and <a href="http://www.arm.com/products/processors/technologies/trustzone/tee-smc.php" title="Secure Monitor and TEEs">Secure Monitor</a> code. As far as
+possible the code is designed for reuse or porting to other ARMv8-A model and
+hardware platforms.</p>
+
+<p>ARM will continue development in collaboration with interested parties to
+provide a full reference implementation of PSCI, TBBR and Secure Monitor code
+to the benefit of all developers working with ARMv8-A TrustZone technology.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>The software is provided under a BSD 3-Clause <a href="./license.md" title="BSD license for ARM Trusted Firmware">license</a>. Certain source files
+are derived from FreeBSD code: the original license is included in these
+source files.</p>
+
+<h2>
+<a id="this-release" class="anchor" href="#this-release" aria-hidden="true"><span class="octicon octicon-link"></span></a>This Release</h2>
+
+<p>This release is a limited functionality implementation of the Trusted Firmware.
+It provides a suitable starting point for productization. Future versions will
+contain new features, optimizations and quality improvements.</p>
+
+<h3>
+<a id="functionality" class="anchor" href="#functionality" aria-hidden="true"><span class="octicon octicon-link"></span></a>Functionality</h3>
+
+<ul>
+<li><p>Prototype implementation of a subset of the Trusted Board Boot Requirements
+Platform Design Document (PDD). This includes packaging the various firmware
+images into a Firmware Image Package (FIP) to be loaded from non-volatile
+storage, and a prototype of authenticated boot using key certificates stored
+in the FIP.</p></li>
+<li><p>Initializes the secure world (for example, exception vectors, control
+registers, GIC and interrupts for the platform), before transitioning into
+the normal world.</p></li>
+<li><p>Supports both GICv2 and GICv3 initialization for use by normal world
+software.</p></li>
+<li><p>Starts the normal world at the Exception Level and Register Width specified
+by the platform port. Typically this is AArch64 EL2 if available.</p></li>
+<li><p>Handles SMCs (Secure Monitor Calls) conforming to the <a href="http://infocenter.arm.com/help/topic/com.arm.doc.den0028a/index.html" title="SMC Calling Convention PDD (ARM DEN 0028A)">SMC Calling
+Convention PDD</a> using an EL3 runtime services framework.</p></li>
+<li><p>Handles SMCs relating to the <a href="http://infocenter.arm.com/help/topic/com.arm.doc.den0022c/DEN0022C_Power_State_Coordination_Interface.pdf" title="Power State Coordination Interface PDD (ARM DEN 0022C)">Power State Coordination Interface PDD</a>
+for the Secondary CPU Boot, CPU Hotplug, CPU Idle and System Shutdown/Reset
+use-cases.</p></li>
+<li><p>A Test Secure-EL1 Payload and Dispatcher to demonstrate Secure Monitor
+functionality such as world switching, EL1 context management and interrupt
+routing. This also demonstrates Secure-EL1 interaction with PSCI. Some of
+this functionality is provided in library form for re-use by other
+Secure-EL1 Payload Dispatchers.</p></li>
+<li><p>Support for alternative Trusted Boot Firmware. Some platforms have their own
+Trusted Boot implementation and only require the Secure Monitor
+functionality provided by ARM Trusted Firmware.</p></li>
+<li><p>Isolation of memory accessible by the secure world from the normal world
+through programming of a TrustZone controller.</p></li>
+<li><p>Support for CPU specific reset sequences, power down sequences and register
+dumping during crash reporting. The CPU specific reset sequences include
+support for errata workarounds.</p></li>
+</ul>
+
+<p>For a full description of functionality and implementation details, please
+see the <a href="./docs/firmware-design.md">Firmware Design</a> and supporting documentation. The <a href="./docs/change-log.md">Change Log</a>
+provides details of changes made since the last release.</p>
+
+<h3>
+<a id="platforms" class="anchor" href="#platforms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Platforms</h3>
+
+<p>This release of the Trusted Firmware has been tested on Revision B of the
+<a href="http://www.arm.com/products/tools/development-boards/versatile-express/juno-arm-development-platform.php" title="Juno ARM Development Platform">Juno ARM Development Platform</a> with Version r0p0-00rel7 of the
+<a href="https://silver.arm.com/download/download.tm?pv=1764630">ARM SCP Firmware</a>.</p>
+
+<p>The Trusted Firmware has also been tested on the 64-bit Linux versions of the
+following ARM <a href="http://www.arm.com/fvp" title="ARM's Fixed Virtual Platforms">FVP</a>s:</p>
+
+<ul>
+<li>  <code>Foundation_Platform</code> (Version 9.1, Build 9.1.33)</li>
+<li>  <code>FVP_Base_AEMv8A-AEMv8A</code> (Version 6.2, Build 0.8.6202)</li>
+<li>  <code>FVP_Base_Cortex-A57x4-A53x4</code> (Version 6.2, Build 0.8.6202)</li>
+<li>  <code>FVP_Base_Cortex-A57x1-A53x1</code> (Version 6.2, Build 0.8.6202)</li>
+<li>  <code>FVP_Base_Cortex-A57x2-A53x4</code> (Version 6.2, Build 0.8.6202)</li>
+</ul>
+
+<p>The Foundation FVP can be downloaded free of charge. The Base FVPs can be
+licensed from ARM: see <a href="http://www.arm.com/fvp" title="ARM's Fixed Virtual Platforms">www.arm.com/fvp</a>.</p>
+
+<h3>
+<a id="still-to-come" class="anchor" href="#still-to-come" aria-hidden="true"><span class="octicon octicon-link"></span></a>Still to Come</h3>
+
+<ul>
+<li><p>Complete and more flexible Trusted Board Boot implementation.</p></li>
+<li><p>Complete implementation of the <a href="http://infocenter.arm.com/help/topic/com.arm.doc.den0022c/DEN0022C_Power_State_Coordination_Interface.pdf" title="Power State Coordination Interface PDD (ARM DEN 0022C)">PSCI</a> v1.0 specification.</p></li>
+<li><p>Support for alternative types of Secure-EL1 Payloads.</p></li>
+<li><p>Extending the GICv3 support to the secure world.</p></li>
+<li><p>Support for new System IP devices.</p></li>
+</ul>
+
+<p>For a full list of detailed issues in the current code, please see the <a href="./docs/change-log.md">Change
+Log</a> and the <a href="https://github.com/ARM-software/tf-issues/issues">GitHub issue tracker</a>.</p>
+
+<h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<p>Get the Trusted Firmware source code from
+<a href="https://www.github.com/ARM-software/arm-trusted-firmware">GitHub</a>.</p>
+
+<p>See the <a href="./docs/user-guide.md">User Guide</a> for instructions on how to install, build and use
+the Trusted Firmware with the ARM <a href="http://www.arm.com/fvp" title="ARM's Fixed Virtual Platforms">FVP</a>s.</p>
+
+<p>See the <a href="./docs/firmware-design.md">Firmware Design</a> for information on how the ARM Trusted Firmware works.</p>
+
+<p>See the <a href="./docs/porting-guide.md">Porting Guide</a> as well for information about how to use this
+software on another ARMv8-A platform.</p>
+
+<p>See the <a href="./contributing.md" title="Guidelines for contributors">Contributing Guidelines</a> for information on how to contribute to this
+project and the <a href="./acknowledgements.md" title="Contributor acknowledgments">Acknowledgments</a> file for a list of contributors to the
+project.</p>
+
+<h3>
+<a id="feedback-and-support" class="anchor" href="#feedback-and-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Feedback and support</h3>
+
+<p>ARM welcomes any feedback on the Trusted Firmware. Please send feedback using
+the <a href="https://github.com/ARM-software/tf-issues/issues">GitHub issue tracker</a>.</p>
+
+<p>ARM licensees may contact ARM directly via their partner managers.</p>
+
+<hr>
+
+<p><em>Copyright (c) 2013-2015, ARM Limited and Contributors. All rights reserved.</em></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Arm-trusted-firmwaresmc maintained by <a href="https://github.com/Shannon86">Shannon86</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("ua-61006774-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
